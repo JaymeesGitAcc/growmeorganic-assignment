@@ -8,6 +8,7 @@ import { OverlayPanel } from "primereact/overlaypanel"
 import { Record, TableData } from "./types"
 import { columnData } from "./utils/columnData"
 import OverLayPanel from "./components/OverLayPanel"
+import { Card } from "primereact/card"
 
 const App = () => {
     const [tableData, setTableData] = useState<TableData>({
@@ -65,7 +66,7 @@ const App = () => {
         }
     }
 
-    const onPage = (event: any) => {
+    const onPageChange = (event: any) => {
         setPagination({
             first: event.first,
             page: event.page,
@@ -87,7 +88,6 @@ const App = () => {
         } else {
             setSelectedData(tableData.currentRecords)
         }
-
         if (overlayRef.current) {
             overlayRef.current.hide()
         }
@@ -98,11 +98,13 @@ const App = () => {
     }, [pagination])
 
     return (
-        <div>
-            <div style={{ padding: "1rem" }}>
+        <div style={{ padding: "1rem" }}>
+            <Card
+                style={{ padding: "1rem", maxWidth: "1200px", margin: "auto" }}
+            >
                 <DataTable
                     value={tableData.currentRecords}
-                    selectionMode="multiple"
+                    selectionMode="checkbox"
                     selection={selectedData}
                     onSelectionChange={(e) => setSelectedData(e.value)}
                     dataKey="id"
@@ -110,7 +112,7 @@ const App = () => {
                     lazy
                     paginator
                     totalRecords={tableData.totalRecords}
-                    onPage={onPage}
+                    onPage={onPageChange}
                     first={pagination.first}
                     rows={pagination.rows}
                     rowsPerPageOptions={[5, 12, 30, 50]}
@@ -152,14 +154,15 @@ const App = () => {
                                 )
                             }
                             style={{
-                                padding: "10px",
-                                maxWidth: "500px",
+                                padding: "12px",
+                                maxWidth: "300px",
+                                overflowX: "auto",
                             }}
                             body={loading ? <Skeleton /> : undefined}
                         />
                     ))}
                 </DataTable>
-            </div>
+            </Card>
         </div>
     )
 }
